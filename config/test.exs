@@ -10,9 +10,4 @@ config :todosync, TodosyncWeb.Endpoint,
 config :logger, level: :warn
 
 # Configure your database
-config :todosync, Todosync.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "todosync_test",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+import_config "test.secret.exs"
