@@ -10,9 +10,4 @@ defmodule TodosyncWeb.Router do
 
     resources "/auth", UsersController, only: [:show, :create]
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", TodosyncWeb do
-  #   pipe_through :api
-  # end
 end
