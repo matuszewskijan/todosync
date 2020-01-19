@@ -7,6 +7,7 @@ defmodule Todosync.Users do
     field :auth_key, :string
     field :r_t_m_key, :string
     field :todoist_key, :string
+    field :last_sync_at, :naive_datetime
 
     timestamps()
   end
@@ -14,7 +15,7 @@ defmodule Todosync.Users do
   @doc false
   def changeset(users, attrs) do
     users
-    |> cast(attrs, [:auth_key, :todoist_key, :r_t_m_key])
+    |> cast(attrs, [:auth_key, :todoist_key, :r_t_m_key, :last_sync_at])
     |> validate_required([:todoist_key])
   end
 
@@ -32,16 +33,14 @@ defmodule Todosync.Users do
   end
 
   def find_by_auth_key(auth_key) do
-    query = Ecto.Query.from u in Todosync.Users,
-    where: u.auth_key == ^auth_key
-
-    Todosync.Repo.one(query)
+    (Ecto.Query.from u in Todosync.Users,
+    where: u.auth_key == ^auth_key)
+    |> Todosync.Repo.one
   end
 
   def find_by_todoist_key(api_key) do
-    query = Ecto.Query.from u in Todosync.Users,
-    where: u.todoist_key == ^api_key
-
-    Todosync.Repo.one(query)
+    (Ecto.Query.from u in Todosync.Users,
+    where: u.todoist_key == ^api_key)
+    |> Todosync.Repo.one
   end
 end
