@@ -1,13 +1,8 @@
-defmodule Todosync.FearAndGreedTest do
+defmodule Todosync.UserTest do
   use Todosync.DataCase
 
   describe "Users" do
     alias Todosync.Users
-
-    @one_day 86400
-    @valid_attrs1 %{todoist_key: "key", value_classification: "greed", timestamp: "#{@one_day}"}
-    @valid_attrs2 %{value: "0", value_classification: "fear", timestamp: "#{@one_day * 2}"}
-    @invalid_attrs %{value: nil, value_classification: "superb", timestamp: "1573577402"}
 
     test "#create/1" do
       user = Users.create("api_key")

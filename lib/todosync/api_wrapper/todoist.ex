@@ -4,6 +4,7 @@ defmodule Todosync.ApiWrapper.Todoist do
   """
 
   use Tesla
+  alias Todosync.ApiWrapper.Todoist
 
   # build dynamic client based on runtime arguments
   def client(token) do
@@ -20,5 +21,29 @@ defmodule Todosync.ApiWrapper.Todoist do
     { :ok, response } = Tesla.get(client, "/projects")
 
     response
+  end
+
+  def list(client) do
+    { :ok, response } = Tesla.get(client, "/tasks")
+
+    response
+  end
+
+  def find(client, id) do
+    { :ok, response } = Tesla.get(client, "/tasks/#{id}")
+
+    response
+  end
+
+  def create(client, data) do
+    { :ok, response } = Tesla.post(client, "/tasks", data)
+
+    response
+  end
+
+  def update(client, id, changes) do
+    Tesla.post(client, "/tasks/#{id}", changes)
+
+    Todoist.find(client, id)
   end
 end
