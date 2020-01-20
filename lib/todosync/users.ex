@@ -43,4 +43,12 @@ defmodule Todosync.Users do
     where: u.todoist_key == ^api_key)
     |> Todosync.Repo.one
   end
+
+  def synchronized(user) do
+    now = DateTime.utc_now |> DateTime.to_naive |> NaiveDateTime.truncate(:second)
+
+    user
+    |> Ecto.Changeset.change(%{last_sync_at: now})
+    |> Todosync.Repo.update()
+  end
 end

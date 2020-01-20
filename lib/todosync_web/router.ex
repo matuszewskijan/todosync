@@ -9,5 +9,7 @@ defmodule TodosyncWeb.Router do
     pipe_through :api
 
     resources "/auth", UsersController, only: [:show, :create]
+
+    post "/sync", SynchronizationController, :sync
   end
 end
