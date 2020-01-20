@@ -20,19 +20,13 @@ defmodule Todosync.ApiWrapper.TodoistTest do
       assert task.body["id"] == 3636243955
     end
 
-    # test "#create/1" do
-    #   created = @client
-    #   |> Todoist.create(%{content: "Test Task"})
-    #   assert user.auth_key != nil
-    # end
-
-    test "#update/3" do
-      @client |> Todoist.update(3636243955, %{content: "Old Content"})
+    test "#update/2" do
+      @client |> Todoist.update(%{id: 3636243955, content: "Old Content"})
 
       found = @client |> Todoist.find(3636243955)
 
-      updated = @client
-      |> Todoist.update(3636243955, %{content: "Update Content"})
+      @client |> Todoist.update(%{id: 3636243955, content: "Update Content"})
+      updated = @client |> Todoist.find(3636243955)
 
       assert found.body["content"] != updated.body["content"]
       assert updated.body["content"] == "Update Content"

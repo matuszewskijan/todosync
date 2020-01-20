@@ -41,9 +41,7 @@ defmodule Todosync.ApiWrapper.Todoist do
     response
   end
 
-  def update(client, id, changes) do
-    Tesla.post(client, "/tasks/#{id}", changes)
-
-    Todoist.find(client, id)
+  def update(client, changes) do
+    Tesla.post(client, "/tasks/#{changes[:id]}", %{content: changes.content})
   end
 end

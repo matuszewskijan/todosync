@@ -1,7 +1,7 @@
 defmodule Todosync.Task do
-  use Ecto.Schema
   import Ecto.Changeset
-  require Ecto.Query
+  import Ecto.Query
+  use Ecto.Schema
 
   schema "tasks" do
     field :completed, :boolean, default: false
@@ -29,7 +29,10 @@ defmodule Todosync.Task do
       Todosync.Users.synchronized(user)
       %{creations: creations}
     else
-      existing_tasks = current_user_tasks(user)
+      existing_tasks = Todosync.Task
+      |> filter_by_current_user(user)
+      |> Todosync.Repo.all
+
       create_many(tasks)
       Todosync.Users.synchronized(user)
       count_changes(existing_tasks, tasks)
@@ -55,33 +58,47 @@ defmodule Todosync.Task do
     task
   end
 
-  def update(id, task) do
-    {:ok, task} = %Todosync.Task{}
-    |> Todosync.Task.changeset(task)
+  def update(task, changes) do
+    {:ok, task} = task
+    |> Todosync.Task.changeset(changes)
     |> Todosync.Repo.update
 
     task
   end
 
-  def delete(id) do
-    post = Todosync.Repo.get!(Task, id)
-    # case Todosync.Repo.delete post do
-    #   {:ok, struct}       ->
-    #   {:error, changeset} -> false
-    # end
-
-    true
+  def filter_by_current_user(query, user) do
+    from t in query,
+    where: t.user_id == ^user.id
   end
 
-  def current_user_tasks(user) do
-    (Ecto.Query.from t in Todosync.Task,
-    where: t.user_id == ^user.id)
-    |> Todosync.Repo.all
+  def filter_by_name(query, name) do
+    if name do
+      from t in query,
+      where: t.name == ^name
+    else
+      query
+    end
+  end
+
+  def filter_by_source(query, source) do
+    if source do
+      from t in query,
+      where: t.source == ^source
+    else
+      query
+    end
   end
 
   def map_from(service, tasks, user) do
     case service do
       "todoist" -> map_from_todoist(tasks, user)
+      _ -> raise "Unknown Service"
+    end
+  end
+
+  def map_to(service, tasks) do
+    case service do
+      "todoist" -> map_to_todoist(tasks)
       _ -> raise "Unknown Service"
     end
   end
@@ -102,6 +119,20 @@ defmodule Todosync.Task do
         updated_at: now,
         completed: task["completed"],
         user_id: user.id
+      }
+    end)
+  end
+
+  defp map_to_todoist(tasks) do
+    tasks
+    |> List.wrap
+    |> Enum.with_index
+    |> Enum.map(fn {task, _i} ->
+      %{
+        content: task["name"],
+        id: task["remote_id"],
+        project_id: task["project_id"],
+        completed: task["completed"]
       }
     end)
   end
