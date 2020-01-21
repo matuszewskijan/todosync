@@ -62,7 +62,7 @@ defmodule Todosync.TaskTest do
 
     test "#filter_by_current_user/2" do
       user = Todosync.Users.create("api_key")
-      task = Task.create(Map.merge(@valid, %{user_id: user.id}))
+      Task.create(Map.merge(@valid, %{user_id: user.id}))
 
       resources = Task
       |> Task.filter_by_current_user(user)
@@ -73,7 +73,7 @@ defmodule Todosync.TaskTest do
 
     test "#filter_by_name/2" do
       user = Todosync.Users.create("api_key")
-      task = Task.create(Map.merge(@valid, %{user_id: user.id}))
+      Task.create(Map.merge(@valid, %{user_id: user.id}))
 
       resources = Task
       |> Task.filter_by_name("Test")
@@ -84,7 +84,7 @@ defmodule Todosync.TaskTest do
 
     test "#filter_by_source/2" do
       user = Todosync.Users.create("api_key")
-      task = Task.create(Map.merge(@valid, %{user_id: user.id}))
+      Task.create(Map.merge(@valid, %{user_id: user.id}))
 
       resources = Task
       |> Task.filter_by_source("todoist")

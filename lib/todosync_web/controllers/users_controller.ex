@@ -11,9 +11,9 @@ defmodule TodosyncWeb.UsersController do
       "todoist" ->
         todoist_authorization(conn, params["api_key"])
       "remember_the_milk" ->
-        render(conn, "error.json", data: %{code: 403, message: "Not Implemented"})
+        render(conn, TodosyncWeb.ErrorView, "error.json", %{code: 403, message: "Not Implemented"})
       _ ->
-        render(conn, "error.json", data: %{code: 403, message: "Unknown Service"})
+        render(conn, TodosyncWeb.ErrorView, "error.json", %{code: 403, message: "Unknown Service"})
     end
   end
 
@@ -25,7 +25,7 @@ defmodule TodosyncWeb.UsersController do
       200 ->
         render(conn, "auth.json", user: Todosync.Users.create(api_key, "todoist"))
       _ ->
-        render(conn, "error.json", data: %{code: response.status, message: response.body})
+        render(conn, TodosyncWeb.ErrorView, "error.json", %{code: response.status, message: response.body})
     end
   end
 end

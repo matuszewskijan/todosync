@@ -40,7 +40,7 @@ defmodule TodosyncWeb.TasksController do
         204 ->
           render(conn, "update.json", task: Task.update(task, params))
         _ ->
-          render(conn, "error.json", data: %{code: 422, error: "Failed to update."})
+          render(conn, TodosyncWeb.ErrorView, "error.json", %{code: 422, error: "Failed to update."})
       end
     end
   end

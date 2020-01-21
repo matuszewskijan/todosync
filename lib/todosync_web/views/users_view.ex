@@ -16,9 +16,4 @@ defmodule TodosyncWeb.UsersView do
   def render("auth.json", data) do
     %{auth_key: data.user.auth_key}
   end
-
-  def render("error.json", response) do
-    %{code: response.data.code, message: response.data.message}
-  end
-
 end

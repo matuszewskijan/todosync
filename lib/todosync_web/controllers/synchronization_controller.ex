@@ -17,9 +17,18 @@ defmodule TodosyncWeb.SynchronizationController do
   end
 
   def sync(conn, params) do
-    tasks = Todoist.client(conn.assigns.user.todoist_key) |> Todoist.list
-    sync_info = Todosync.Task.synchronize(tasks.body, conn.assigns.user, "todoist")
-    render(conn, "show.json", sync_info: sync_info)
+    case params["service"] do
+      "todoist" ->
+        tasks = Todoist.client(conn.assigns.user.todoist_key) |> Todoist.list
+        sync_info = Todosync.Task.synchronize(tasks.body, conn.assigns.user, "todoist")
+        render(conn, "show.json", sync_info: sync_info)
+      "remember_the_milk" ->
+        render(conn, TodosyncWeb.ErrorView, "error.json", %{code: 400, message: "Not Implemented."})
+      "all" ->
+        render(conn, TodosyncWeb.ErrorView, "error.json", %{code: 400, message: "Not Implemented."})
+      _ ->
+        render(conn, TodosyncWeb.ErrorView, "error.json", %{code: 400, message: "Unknown service."})
+    end
   end
 
 end

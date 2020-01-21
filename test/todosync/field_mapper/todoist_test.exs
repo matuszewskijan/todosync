@@ -1,8 +1,6 @@
 defmodule Todosync.FieldMapper.TodoistTest do
   use Todosync.DataCase
 
-  @valid %{remote_id: 1, name: "Test", user_id: 1, source: "todoist"}
-
   describe "Users" do
     alias Todosync.FieldMapper.Todoist
 
