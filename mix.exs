@@ -44,7 +44,8 @@ defmodule Todosync.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:tesla, "~> 1.3.0"},
       {:hackney, "~> 1.15.2"},
-      {:jason, ">= 1.0.0"}
+      {:jason, ">= 1.0.0"},
+      {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false}
     ]
   end
 

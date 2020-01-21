@@ -18,25 +18,25 @@ defmodule Todosync.ApiWrapper.Todoist do
   end
 
   def verify!(client) do
-    { :ok, response } = Tesla.get(client, "/projects")
+    {:ok, response} = Tesla.get(client, "/projects")
 
     response
   end
 
   def list(client) do
-    { :ok, response } = Tesla.get(client, "/tasks")
+    {:ok, response} = Tesla.get(client, "/tasks")
 
     response
   end
 
   def find(client, id) do
-    { :ok, response } = Tesla.get(client, "/tasks/#{id}")
+    {:ok, response} = Tesla.get(client, "/tasks/#{id}")
 
     response
   end
 
   def create(client, data) do
-    { :ok, response } = Tesla.post(client, "/tasks", data)
+    {:ok, response} = Tesla.post(client, "/tasks", data)
 
     response
   end

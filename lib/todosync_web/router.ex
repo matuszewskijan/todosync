@@ -9,7 +9,7 @@ defmodule TodosyncWeb.Router do
     pipe_through :api
 
     resources "/auth", UsersController, only: [:show, :create]
-    resources "/tasks", TasksController, only: [:index, :update] # TODO: /search path for :index
+    resources "/tasks", TasksController, only: [:index, :update]
 
     post "/sync", SynchronizationController, :sync
   end

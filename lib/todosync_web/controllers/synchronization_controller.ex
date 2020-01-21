@@ -7,7 +7,7 @@ defmodule TodosyncWeb.SynchronizationController do
 
   defp authenticate(conn, _) do
     auth_key = Enum.at(get_req_header(conn, "authorization"), 0)
-    if (user = Todosync.Users.find_by_auth_key(auth_key)) do
+    if user = Todosync.Users.find_by_auth_key(auth_key) do
       assign(conn, :user, user)
     else
       conn

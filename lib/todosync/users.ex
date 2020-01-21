@@ -19,9 +19,8 @@ defmodule Todosync.Users do
     |> validate_required([:todoist_key])
   end
 
-  # TODO: Use service here
   def create(api_key, service \\ "todoist") do
-    if (user = Todosync.Users.find_by_service(service, api_key)) do
+    if user = Todosync.Users.find_by_service(service, api_key) do
       user
     else
       {:ok, user} = %Todosync.Users{}
