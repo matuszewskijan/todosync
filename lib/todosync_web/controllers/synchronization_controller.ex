@@ -11,7 +11,7 @@ defmodule TodosyncWeb.SynchronizationController do
       assign(conn, :user, user)
     else
       conn
-      |> send_resp(403, "Authorization key not found or invalid!") # TODO: Check if we can return JSON here
+      |> render(TodosyncWeb.ErrorView, "error.json", %{code: 403, message: "Authorization key not found or invalid!"})
       |> halt
     end
   end
