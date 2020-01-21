@@ -4,9 +4,19 @@ defmodule Todosync.UserTest do
   describe "Users" do
     alias Todosync.Users
 
-    test "#create/1" do
+    test "#create/2" do
       user = Users.create("api_key")
       assert user.auth_key != nil
+    end
+
+    test "#find_by_service/2" do
+      user = Users.create("api_key")
+
+      assert Users.find_by_service("todoist", user.todoist_key) != nil
+
+      assert_raise RuntimeError, fn ->
+       assert Users.find_by_service("other", user.todoist_key) == "Not Implemented"
+      end
     end
 
     test "#find_by_auth_key/1" do

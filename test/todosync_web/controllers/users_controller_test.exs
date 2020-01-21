@@ -13,10 +13,18 @@ defmodule TodosyncWeb.UsersControllerTest do
     assert json_response(conn, 200)["todoist_key"] == "api_key"
   end
 
-  test "unsuccesful POST /auth", %{conn: conn} do
+  test "unknow service POST /auth", %{conn: conn} do
     conn = conn
     |> put_req_header("content-type", "application/json")
-    |> post("/auth", %{api_key: "invalid_key"})
+    |> post("/auth", %{service: "lalala", api_key: "invalid_key"})
+
+    assert json_response(conn, 200)["message"] == "Unknown Service"
+  end
+
+  test "invalid API key POST /auth", %{conn: conn} do
+    conn = conn
+    |> put_req_header("content-type", "application/json")
+    |> post("/auth", %{service: "todoist", api_key: "invalid_key"})
 
     assert json_response(conn, 200)["message"] == "Forbidden\n"
   end
@@ -24,7 +32,7 @@ defmodule TodosyncWeb.UsersControllerTest do
   test "successful POST /auth", %{conn: conn} do
     conn = conn
     |> put_req_header("content-type", "application/json")
-    |> post("/auth", %{api_key: Application.get_env(:todosync, :api_key)})
+    |> post("/auth", %{service: "todoist", api_key: Application.get_env(:todosync, :api_key)})
 
     assert json_response(conn, 200)["auth_key"] != nil
   end

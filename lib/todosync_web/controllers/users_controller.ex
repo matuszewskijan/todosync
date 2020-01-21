@@ -7,14 +7,25 @@ defmodule TodosyncWeb.UsersController do
   end
 
   def create(conn, params) do
-    response = Todosync.ApiWrapper.Todoist.client(params["api_key"])
+    case params["service"] do
+      "todoist" ->
+        todoist_authorization(conn, params["api_key"])
+      "remember_the_milk" ->
+        render(conn, "error.json", data: %{code: 403, message: "Not Implemented"})
+      _ ->
+        render(conn, "error.json", data: %{code: 403, message: "Unknown Service"})
+    end
+  end
+
+  defp todoist_authorization(conn, api_key) do
+    response = Todosync.ApiWrapper.Todoist.client(api_key)
     |> Todosync.ApiWrapper.Todoist.verify!
 
     case response.status do
       200 ->
-        render(conn, "auth.json", user: Todosync.Users.create(params["api_key"]))
+        render(conn, "auth.json", user: Todosync.Users.create(api_key, "todoist"))
       _ ->
-        render(conn, "error.json", data: response)
+        render(conn, "error.json", data: %{code: response.status, message: response.body})
     end
   end
 end

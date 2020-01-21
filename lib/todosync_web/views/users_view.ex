@@ -14,13 +14,11 @@ defmodule TodosyncWeb.UsersView do
   end
 
   def render("auth.json", data) do
-    token = Phoenix.Token.sign(data.conn, "user salt", data.user.id)
-
     %{auth_key: data.user.auth_key}
   end
 
   def render("error.json", response) do
-    %{code: response.data.status, message: response.data.body}
+    %{code: response.data.code, message: response.data.message}
   end
 
 end

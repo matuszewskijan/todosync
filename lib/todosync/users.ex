@@ -21,7 +21,7 @@ defmodule Todosync.Users do
 
   # TODO: Use service here
   def create(api_key, service \\ "todoist") do
-    if (user = Todosync.Users.find_by_todoist_key(api_key)) do
+    if (user = Todosync.Users.find_by_service(service, api_key)) do
       user
     else
       {:ok, user} = %Todosync.Users{}
@@ -29,6 +29,15 @@ defmodule Todosync.Users do
       |> Todosync.Repo.insert
 
       user
+    end
+  end
+
+  def find_by_service(service, api_key) do
+    case service do
+      "todoist" ->
+        find_by_todoist_key(api_key)
+      _ ->
+        raise "Not Implemented"
     end
   end
 
