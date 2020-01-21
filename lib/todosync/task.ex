@@ -91,50 +91,16 @@ defmodule Todosync.Task do
 
   def map_from(service, tasks, user) do
     case service do
-      "todoist" -> map_from_todoist(tasks, user)
+      "todoist" -> Todosync.FieldMapper.Todoist.map_from(tasks, user)
       _ -> raise "Unknown Service"
     end
   end
 
   def map_to(service, tasks) do
     case service do
-      "todoist" -> map_to_todoist(tasks)
+      "todoist" -> Todosync.FieldMapper.Todoist.map_to(tasks)
       _ -> raise "Unknown Service"
     end
-  end
-
-  defp map_from_todoist(tasks, user) do
-    now = DateTime.utc_now |> DateTime.to_naive |> NaiveDateTime.truncate(:second)
-    tasks
-    |> Enum.with_index
-    |> Enum.map(fn {task, _i} ->
-      {:ok, inserted_at, 0} = DateTime.from_iso8601(task["created"])
-
-      %{
-        name: task["content"],
-        remote_id: task["id"],
-        source: "todoist",
-        project_id: task["project_id"],
-        inserted_at: DateTime.to_naive(inserted_at),
-        updated_at: now,
-        completed: task["completed"],
-        user_id: user.id
-      }
-    end)
-  end
-
-  defp map_to_todoist(tasks) do
-    tasks
-    |> List.wrap
-    |> Enum.with_index
-    |> Enum.map(fn {task, _i} ->
-      %{
-        content: task["name"],
-        id: task["remote_id"],
-        project_id: task["project_id"],
-        completed: task["completed"]
-      }
-    end)
   end
 
   defp count_changes(existing, upstream) do

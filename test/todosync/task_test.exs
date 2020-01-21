@@ -121,8 +121,6 @@ defmodule Todosync.TaskTest do
     end
 
     test "#map_to/2 with existing service" do
-      user = Todosync.Users.create("api_key")
-
       todoist = [
         %{
           "remote_id" => 3637711078,
