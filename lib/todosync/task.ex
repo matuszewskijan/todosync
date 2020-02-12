@@ -30,6 +30,7 @@ defmodule Todosync.Task do
       %{creations: creations}
     else
       existing_tasks = Todosync.Task
+      |> filter_by_source(service)
       |> filter_by_current_user(user)
       |> Todosync.Repo.all
 
