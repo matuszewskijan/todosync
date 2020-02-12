@@ -4,7 +4,6 @@ defmodule Todosync.ApiWrapper.Todoist do
   """
 
   use Tesla
-  alias Todosync.ApiWrapper.Todoist
 
   # build dynamic client based on runtime arguments
   def client(token) do

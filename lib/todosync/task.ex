@@ -50,7 +50,7 @@ defmodule Todosync.Task do
     )
   end
 
-  def create(task, service \\ "todoist") do
+  def create(task, _service \\ "todoist") do
     {:ok, task} = %Todosync.Task{}
     |> Todosync.Task.changeset(task)
     |> Todosync.Repo.insert

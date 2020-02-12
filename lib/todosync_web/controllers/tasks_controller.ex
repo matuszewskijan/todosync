@@ -1,7 +1,6 @@
 defmodule TodosyncWeb.TasksController do
   use TodosyncWeb, :controller
 
-  alias Todosync.ApiWrapper.Todoist
   alias Todosync.Task
   plug :authenticate
 
